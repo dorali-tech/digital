@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -7,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
   
   <script>
     tailwind.config = {
@@ -36,10 +38,15 @@
   </style>
 
   <style>
+    :root {
+      --color-primary: #0F4C81;
+      --color-secondary: #3A7CA5;
+    }
     .card-hover { transition: transform 0.3s ease; }
     .card-hover:hover { transform: translateY(-5px); }
-    /* 核心修复：移除 min-height 限制，改用 Tailwind 类控制具体高度 */
-    .chart-container { position: relative; height: 100%; width: 100%; }
+    /* 图表容器样式，确保响应式 */
+    .chart-box { position: relative; width: 100%; height: 100%; min-height: 250px; }
+    .chart-box-sm { position: relative; width: 100%; height: 100%; min-height: 200px; }
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
@@ -101,26 +108,29 @@
             <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
               <option value="all">All Months</option>
               <option value="jan">January</option>
+              <option value="feb">February</option>
             </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Year</label>
             <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
               <option value="2025">2025</option>
+              <option value="2024">2024</option>
             </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">BU</label>
             <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
               <option value="all">All BUs</option>
+              <option value="bu1">Business Unit 1</option>
             </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
             <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
               <option value="all">All Platforms</option>
-              <option value="gongzhonghao_a">公众号A</option>
-              <option value="gongzhonghao_b">公众号B</option>
+              <option value="gongzhonghao">公众号</option>
+              <option value="shipinhao">视频号</option>
             </select>
           </div>
         </div>
@@ -129,6 +139,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Content Type</label>
             <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
               <option value="all">All Types</option>
+              <option value="article">Article</option>
+              <option value="video">Video</option>
             </select>
           </div>
           <div>
@@ -154,7 +166,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-sm font-medium text-gray-500">Total Posts</p>
@@ -172,7 +184,7 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-sm font-medium text-gray-500">Total Views</p>
@@ -190,7 +202,7 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-sm font-medium text-gray-500">Total Engagement</p>
@@ -208,7 +220,7 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-sm font-medium text-gray-500">Conversion Rate</p>
@@ -246,7 +258,7 @@
             </div>
           </div>
           <div class="lg:col-span-5">
-            <div class="chart-container h-[300px]">
+            <div class="chart-box h-[250px]">
                 <canvas id="viewsChart"></canvas>
             </div>
           </div>
@@ -259,6 +271,9 @@
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Platform</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reading</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Video</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -266,26 +281,41 @@
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">2025年数字营销的未来</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">公众号A</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">24,567</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">24,567</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">-</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">如何在线建立强大的品牌形象</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">视频号B</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">19,876</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">-</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">19,876</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">AI在内容创作中的力量</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">视频号C</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">17,654</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">-</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">17,654</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">2025年值得关注的社交媒体趋势</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">公众号B</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">16,543</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">16,543</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">-</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">通过影响者营销最大化ROI</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">公众号C</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15,432</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">15,432</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-400">-</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                 </tbody>
               </table>
@@ -313,7 +343,7 @@
             </div>
           </div>
           <div class="lg:col-span-5">
-            <div class="chart-container h-[300px]">
+            <div class="chart-box h-[250px]">
                 <canvas id="engagementChart"></canvas>
             </div>
           </div>
@@ -325,7 +355,10 @@
                   <tr>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Platform</th>
-                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Eng.</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Engagement</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shares</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comments</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -333,26 +366,41 @@
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">2025年数字营销的未来</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">公众号A</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">5,678</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">2,345</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1,234</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">如何在线建立强大的品牌形象</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">视频号B</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4,567</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1,987</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1,056</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">AI在内容创作中的力量</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">视频号C</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">4,321</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1,876</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">987</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">2025年值得关注的社交媒体趋势</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">公众号B</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3,987</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1,654</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">876</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                   <tr>
                     <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">通过影响者营销最大化ROI</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">公众号C</td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">3,765</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">1,543</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900">765</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500"><a href="#" class="text-primary hover:underline">查看</a></td>
                   </tr>
                 </tbody>
               </table>
@@ -384,10 +432,10 @@
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="chart-container h-[220px]">
+              <div class="chart-box-sm">
                   <canvas id="readingChart"></canvas>
               </div>
-              <div class="chart-container h-[220px]">
+              <div class="chart-box-sm">
                   <canvas id="videoChart"></canvas>
               </div>
           </div>
@@ -425,7 +473,7 @@
               <div class="text-xs text-gray-500">10%</div>
             </div>
           </div>
-          <div class="chart-container h-[220px] flex justify-center">
+          <div class="chart-box h-[200px] flex justify-center">
               <canvas id="engagementBreakdownChart"></canvas>
           </div>
         </div>
@@ -434,14 +482,97 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2 class="text-lg font-bold text-gray-800 mb-4">WeChat</h2>
-          <div class="chart-container h-[280px]">
+          <div class="chart-box h-[250px]">
               <canvas id="wechatFollowersChart"></canvas>
           </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2 class="text-lg font-bold text-gray-800 mb-4">Video</h2>
-          <div class="chart-container h-[280px]">
+          <div class="chart-box h-[250px]">
               <canvas id="videoFollowersChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="funnel" class="tab-content hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Total Followers</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">125,432</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+7.2%</span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-blue-100 p-3 rounded-full"><i class="fa fa-users text-primary text-xl"></i></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Registered Users</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">45,678</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+5.8%</span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-green-100 p-3 rounded-full"><i class="fa fa-user-plus text-green-600 text-xl"></i></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">New Reachable HCP</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">3,456</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+12.3%</span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-purple-100 p-3 rounded-full"><i class="fa fa-user-md text-purple-600 text-xl"></i></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Active Users</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">28,945</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+4.7%</span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-blue-100 p-3 rounded-full"><i class="fa fa-user text-blue-600 text-xl"></i></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Total Leads</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">1,234</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+8.7%</span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-orange-100 p-3 rounded-full"><i class="fa fa-envelope text-orange-600 text-xl"></i></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">MQL Conversion Rate</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">2.7%</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+0.3%</span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-red-100 p-3 rounded-full"><i class="fa fa-exchange text-red-600 text-xl"></i></div>
           </div>
         </div>
       </div>
@@ -451,7 +582,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div class="bg-gray-50 rounded-lg p-6 flex flex-col justify-center items-center text-center">
             <h3 class="text-md font-semibold text-gray-800 mb-4">KPI达成率</h3>
-            <div class="chart-container h-[200px] flex justify-center">
+            <div class="chart-box-sm flex justify-center">
                 <canvas id="kpiGaugeChart"></canvas>
             </div>
             <div class="text-center mt-[-40px]">
@@ -461,13 +592,13 @@
           </div>
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Actual vs KPI</h3>
-            <div class="chart-container h-[200px]">
+            <div class="chart-box-sm">
                 <canvas id="actualVsKpiChart"></canvas>
             </div>
           </div>
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Personal Distribution</h3>
-            <div class="chart-container h-[200px] flex justify-center">
+            <div class="chart-box-sm flex justify-center">
                 <canvas id="professionalTitleChart1"></canvas>
             </div>
           </div>
@@ -475,19 +606,19 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">City level Distribution</h3>
-            <div class="chart-container h-[200px]">
+            <div class="chart-box-sm">
                 <canvas id="cityLevelChart1"></canvas>
             </div>
           </div>
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Hospital Class Distribution</h3>
-            <div class="chart-container h-[200px]">
+            <div class="chart-box-sm">
                 <canvas id="hospitalLevelChart1"></canvas>
             </div>
           </div>
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">TA Distribution (Top 5)</h3>
-            <div class="chart-container h-[200px] flex justify-center">
+            <div class="chart-box-sm flex justify-center">
                 <canvas id="departmentChart1"></canvas>
             </div>
           </div>
@@ -496,29 +627,31 @@
 
       <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-bold text-gray-800 mb-6">New Reachable HCP Profile</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">Personal Distribution</h4>
-            <div class="chart-container h-[200px] flex justify-center">
-                <canvas id="professionalTitleChart2"></canvas>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">Personal Distribution</h4>
+              <div class="chart-box-sm flex justify-center">
+                  <canvas id="professionalTitleChart2"></canvas>
+              </div>
             </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">City level Distribution</h4>
-            <div class="chart-container h-[200px]">
-                <canvas id="cityLevelChart2"></canvas>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">City level Distribution</h4>
+              <div class="chart-box-sm">
+                  <canvas id="cityLevelChart2"></canvas>
+              </div>
             </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">Hospital Class Distribution</h4>
-            <div class="chart-container h-[200px]">
-                <canvas id="hospitalLevelChart2"></canvas>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">Hospital Class Distribution</h4>
+              <div class="chart-box-sm">
+                  <canvas id="hospitalLevelChart2"></canvas>
+              </div>
             </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">TA Distribution (top 5)</h4>
-            <div class="chart-container h-[200px] flex justify-center">
-                <canvas id="departmentChart2"></canvas>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">TA Distribution (top 5)</h4>
+              <div class="chart-box-sm flex justify-center">
+                  <canvas id="departmentChart2"></canvas>
+              </div>
             </div>
           </div>
         </div>
@@ -562,124 +695,17 @@
 
       <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-bold text-gray-800 mb-6">大中华区MQL</h2>
-        <div class="flex justify-center h-[300px]">
-          <div class="chart-container w-full max-w-[500px]">
+        <div class="flex justify-center" style="height: 350px; width: 100%; max-width: 600px; margin: 0 auto;">
+          <div class="chart-box">
               <canvas id="greaterChinaMqlChart"></canvas>
           </div>
         </div>
       </div>
-    </div>
-
-    <div id="funnel" class="tab-content hidden">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-          <div class="flex justify-between items-start">
-            <div>
-              <p class="text-sm font-medium text-gray-500">Total Followers</p>
-              <h3 class="text-2xl font-bold text-gray-800 mt-1">125,432</h3>
-              <div class="flex items-center mt-2">
-                <span class="text-sm font-medium flex items-center text-green-500">
-                  <i class="fa fa-arrow-up mr-1"></i>+7.2%
-                </span>
-                <span class="text-gray-500 text-sm ml-2">vs PY</span>
-              </div>
-            </div>
-            <div class="bg-blue-100 p-3 rounded-full">
-              <i class="fa fa-users text-primary text-xl"></i>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-           <div class="flex justify-between items-start">
-             <div>
-               <p class="text-sm font-medium text-gray-500">Registered Users</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">45,678</h3>
-               <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500">
-                   <i class="fa fa-arrow-up mr-1"></i>+5.8%
-                 </span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
-               </div>
-             </div>
-             <div class="bg-green-100 p-3 rounded-full">
-               <i class="fa fa-user-plus text-green-600 text-xl"></i>
-             </div>
-           </div>
-         </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-           <div class="flex justify-between items-start">
-             <div>
-               <p class="text-sm font-medium text-gray-500">New Reachable HCP</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">3,456</h3>
-               <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500">
-                   <i class="fa fa-arrow-up mr-1"></i>+12.3%
-                 </span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
-               </div>
-             </div>
-             <div class="bg-purple-100 p-3 rounded-full">
-               <i class="fa fa-user-md text-purple-600 text-xl"></i>
-             </div>
-           </div>
-         </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-           <div class="flex justify-between items-start">
-             <div>
-               <p class="text-sm font-medium text-gray-500">Active Users</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">28,945</h3>
-               <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500">
-                   <i class="fa fa-arrow-up mr-1"></i>+4.7%
-                 </span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
-               </div>
-             </div>
-             <div class="bg-blue-100 p-3 rounded-full">
-               <i class="fa fa-user text-blue-600 text-xl"></i>
-             </div>
-           </div>
-         </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-           <div class="flex justify-between items-start">
-             <div>
-               <p class="text-sm font-medium text-gray-500">Total Leads</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">1,234</h3>
-               <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500">
-                   <i class="fa fa-arrow-up mr-1"></i>+8.7%
-                 </span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
-               </div>
-             </div>
-             <div class="bg-orange-100 p-3 rounded-full">
-               <i class="fa fa-envelope text-orange-600 text-xl"></i>
-             </div>
-           </div>
-         </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
-           <div class="flex justify-between items-start">
-             <div>
-               <p class="text-sm font-medium text-gray-500">MQL Conversion Rate</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">2.7%</h3>
-               <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500">
-                   <i class="fa fa-arrow-up mr-1"></i>+0.3%
-                 </span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
-               </div>
-             </div>
-             <div class="bg-red-100 p-3 rounded-full">
-               <i class="fa fa-exchange text-red-600 text-xl"></i>
-             </div>
-           </div>
-         </div>
-      </div>
 
       <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-bold text-gray-800 mb-6">User Conversion Funnel（使用漏斗图展示）</h2>
-        <div class="flex justify-center h-[350px]">
-          <div class="chart-container w-full max-w-[800px]">
+        <div class="flex justify-center" style="height: 400px; width: 100%; max-width: 800px; margin: 0 auto;">
+          <div class="chart-box">
               <canvas id="funnelChart"></canvas>
           </div>
         </div>
@@ -696,106 +722,62 @@
   <script>
     // Tab Switching Logic
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => {
-        el.classList.add('hidden');
-        el.classList.remove('block');
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+        content.classList.remove('block');
       });
       document.getElementById(tabId).classList.remove('hidden');
       document.getElementById(tabId).classList.add('block');
       
       const buttons = [
-        { btn: document.getElementById('social-tab-btn'), id: 'social' },
-        { btn: document.getElementById('funnel-tab-btn'), id: 'funnel' }
+        { id: 'social-tab-btn', tab: 'social' },
+        { id: 'funnel-tab-btn', tab: 'funnel' }
       ];
       
-      buttons.forEach(item => {
-        if(item.id === tabId) {
-          item.btn.classList.add('border-primary', 'text-primary');
-          item.btn.classList.remove('border-transparent', 'hover:text-gray-600');
+      buttons.forEach(btn => {
+        const el = document.getElementById(btn.id);
+        if (btn.tab === tabId) {
+          el.classList.add('border-primary', 'text-primary');
+          el.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
         } else {
-          item.btn.classList.remove('border-primary', 'text-primary');
-          item.btn.classList.add('border-transparent', 'hover:text-gray-600');
+          el.classList.remove('border-primary', 'text-primary');
+          el.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
         }
       });
     }
 
-    // Chart.js Configuration
-    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-    Chart.defaults.color = '#64748b';
-    Chart.defaults.responsive = true;
-    Chart.defaults.maintainAspectRatio = false; // 关键配置：不允许自动拉长
-
-    // Center Text Plugin for Doughnut
-    const centerTextPlugin = {
-      id: 'centerText',
-      beforeDraw: function(chart) {
-        if (chart.config.options.elements && chart.config.options.elements.center) {
-          var width = chart.width, height = chart.height, ctx = chart.ctx;
-          ctx.restore();
-          var fontSize = (height / 114).toFixed(2);
-          ctx.font = "bold " + 1.5 + "em sans-serif";
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = "#0F4C81";
-          var text = chart.config.options.elements.center.text;
-          var textX = Math.round((width - ctx.measureText(text).width) / 2);
-          var textY = height / 2;
-          ctx.fillText(text, textX, textY);
-          ctx.save();
-        }
-      }
-    };
-    Chart.register(centerTextPlugin);
-
+    // Chart.js Init
     document.addEventListener('DOMContentLoaded', function() {
-      // 1. Views Chart (Line)
+      Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+      Chart.defaults.color = '#64748b';
+      Chart.defaults.responsive = true;
+      Chart.defaults.maintainAspectRatio = false;
+
+      // --- TAB 1 CHARTS ---
+
+      // 1. Views Chart
       new Chart(document.getElementById('viewsChart'), {
         type: 'line',
         data: {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
           datasets: [
-            {
-              label: '2025 Views',
-              data: [32000, 35000, 42000, 38000, 45000, 48000, 52000, 56000, 53000, 58000, 62000, 65000],
-              borderColor: '#0F4C81',
-              backgroundColor: 'rgba(15, 76, 129, 0.1)',
-              fill: true,
-              tension: 0.4
-            },
-            {
-              label: '2024 Views',
-              data: [28000, 30000, 36000, 34000, 39000, 41000, 45000, 48000, 46000, 50000, 54000, 57000],
-              borderColor: '#94A3B8',
-              borderDash: [5, 5],
-              tension: 0.4
-            }
+            { label: '2025 Views', data: [32000, 35000, 42000, 38000, 45000, 48000, 52000, 56000, 53000, 58000, 62000, 65000], borderColor: '#0F4C81', backgroundColor: 'rgba(15, 76, 129, 0.1)', fill: true, tension: 0.4 },
+            { label: '2024 Views', data: [28000, 30000, 36000, 34000, 39000, 41000, 45000, 48000, 46000, 50000, 54000, 57000], borderColor: '#94A3B8', borderDash: [5, 5], tension: 0.4 }
           ]
-        },
-        options: { plugins: { legend: { position: 'top' } } }
+        }
       });
 
-      // 2. Engagement Chart (Line)
+      // 2. Engagement Chart
       new Chart(document.getElementById('engagementChart'), {
         type: 'line',
         data: {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          datasets: [{
-            label: '2025 Engagement',
-            data: [5200, 5800, 6500, 6100, 7200, 7600, 8300, 8900, 8500, 9200, 9800, 10500],
-            borderColor: '#3A7CA5',
-            backgroundColor: 'rgba(58, 124, 165, 0.1)',
-            fill: true,
-            tension: 0.4
-          }, {
-            label: '2024 Engagement',
-            data: [4500, 4900, 5600, 5300, 6200, 6500, 7100, 7500, 7200, 7800, 8300, 8900],
-            borderColor: '#94A3B8',
-            borderDash: [5, 5],
-            tension: 0.4
-          }]
+          datasets: [{ label: '2025 Engagement', data: [5200, 5800, 6500, 6100, 7200, 7600, 8300, 8900, 8500, 9200, 9800, 10500], borderColor: '#3A7CA5', backgroundColor: 'rgba(58, 124, 165, 0.1)', fill: true, tension: 0.4 },
+                     { label: '2024 Engagement', data: [4500, 4900, 5600, 5300, 6200, 6500, 7100, 7500, 7200, 7800, 8300, 8900], borderColor: '#94A3B8', borderDash: [5, 5], tension: 0.4 }]
         }
       });
 
-      // 3. Reading Chart (Small Bar)
+      // 3. Reading Chart
       new Chart(document.getElementById('readingChart'), {
         type: 'bar',
         data: {
@@ -807,7 +789,7 @@
         }
       });
 
-      // 4. Video Chart (Small Bar)
+      // 4. Video Chart
       new Chart(document.getElementById('videoChart'), {
         type: 'bar',
         data: {
@@ -819,20 +801,17 @@
         }
       });
 
-      // 5. Engagement Breakdown (Doughnut)
+      // 5. Engagement Breakdown
       new Chart(document.getElementById('engagementBreakdownChart'), {
         type: 'doughnut',
         data: {
           labels: ['Shares', 'Likes', 'Favorites', 'Comments', 'Clicks'],
-          datasets: [{
-            data: [25, 35, 15, 15, 10],
-            backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#EF4444', '#38A169']
-          }]
+          datasets: [{ data: [25, 35, 15, 15, 10], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#EF4444', '#38A169'] }]
         },
         options: { cutout: '60%', plugins: { legend: { position: 'right' } } }
       });
 
-      // 6. WeChat Followers (Stacked Bar by Platform)
+      // 6. WeChat Followers
       new Chart(document.getElementById('wechatFollowersChart'), {
         type: 'bar',
         data: {
@@ -843,10 +822,11 @@
             { label: '公众号C', data: [700, 850, 1000, 1150, 1300, 1450], backgroundColor: '#1E88E5' },
             { label: '公众号D', data: [500, 600, 700, 800, 900, 1000], backgroundColor: '#64B5F6' }
           ]
-        }
+        },
+        options: { scales: { x: { stacked: true }, y: { stacked: true } } }
       });
 
-      // 7. Video Followers (Stacked Bar by Platform)
+      // 7. Video Followers
       new Chart(document.getElementById('videoFollowersChart'), {
         type: 'bar',
         data: {
@@ -857,22 +837,20 @@
             { label: '视频号C', data: [400, 550, 700, 850, 1000, 1150], backgroundColor: '#D69E2E' },
             { label: '视频号D', data: [300, 400, 500, 600, 700, 800], backgroundColor: '#38A169' }
           ]
-        }
+        },
+        options: { scales: { x: { stacked: true }, y: { stacked: true } } }
       });
+
+      // --- TAB 2 CHARTS ---
 
       // 8. KPI Gauge
       new Chart(document.getElementById('kpiGaugeChart'), {
         type: 'doughnut',
         data: {
           labels: ['达成率', '未达成'],
-          datasets: [{
-            data: [87, 13],
-            backgroundColor: ['#38A169', '#E2E8F0'],
-            circumference: 180,
-            rotation: 270
-          }]
+          datasets: [{ data: [87, 13], backgroundColor: ['#38A169', '#E2E8F0'], circumference: 180, rotation: 270 }]
         },
-        options: { cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+        options: { cutout: '75%', plugins: { legend: { display: false } } }
       });
 
       // 9. Actual vs KPI
@@ -888,47 +866,83 @@
       });
 
       // 10. Personal Distribution (Pie - Used twice)
-      const personalData = {
-        labels: ['医生', '护士', '医技', '其他工作人员', '管理层'],
-        datasets: [{ data: [45, 25, 15, 10, 5], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#64B5F6', '#90CAF9'] }]
+      const personalConfig = {
+        type: 'pie',
+        data: {
+          labels: ['医生', '护士', '医技', '其他', '管理层'],
+          datasets: [{ data: [45, 25, 15, 10, 5], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#64B5F6', '#90CAF9'] }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
       };
-      new Chart(document.getElementById('professionalTitleChart1'), { type: 'pie', data: personalData, options: { plugins: { legend: { position: 'bottom' } } } });
-      new Chart(document.getElementById('professionalTitleChart2'), { type: 'pie', data: personalData, options: { plugins: { legend: { display: false } } } });
+      new Chart(document.getElementById('professionalTitleChart1'), JSON.parse(JSON.stringify(personalConfig)));
+      const personalConfig2 = JSON.parse(JSON.stringify(personalConfig));
+      personalConfig2.options.plugins.legend.display = false;
+      new Chart(document.getElementById('professionalTitleChart2'), personalConfig2);
 
-      // 11. City Level (Horizontal Bar - Used twice)
-      const cityData = {
-        labels: ['一线城市', '二线城市', '三线城市', '四线及以下'],
-        datasets: [{ label: '%', data: [40, 30, 20, 10], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#64B5F6'] }]
+      // 11. City Level (Bar - Used twice)
+      const cityConfig = {
+        type: 'bar',
+        data: {
+          labels: ['一线城市', '二线城市', '三线城市', '四线及以下'],
+          datasets: [{ label: '%', data: [40, 30, 20, 10], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#64B5F6'] }]
+        },
+        options: { indexAxis: 'y', plugins: { legend: { display: false } } }
       };
-      const cityOptions = { indexAxis: 'y', plugins: { legend: { display: false } } };
-      new Chart(document.getElementById('cityLevelChart1'), { type: 'bar', data: cityData, options: cityOptions });
-      new Chart(document.getElementById('cityLevelChart2'), { type: 'bar', data: cityData, options: cityOptions });
+      new Chart(document.getElementById('cityLevelChart1'), JSON.parse(JSON.stringify(cityConfig)));
+      new Chart(document.getElementById('cityLevelChart2'), JSON.parse(JSON.stringify(cityConfig)));
 
-      // 12. Hospital Class (Bar - Used twice)
-      const hospitalData = {
-        labels: ['三级医院', '二级医院', '一级医院', '其他'],
-        datasets: [{ label: '%', data: [55, 30, 10, 5], backgroundColor: ['#E53E3E', '#DD6B20', '#D69E2E', '#38A169'] }]
+      // 12. Hospital Level (Bar - Used twice)
+      const hospitalConfig = {
+        type: 'bar',
+        data: {
+          labels: ['三级医院', '二级医院', '一级医院', '其他'],
+          datasets: [{ label: '%', data: [55, 30, 10, 5], backgroundColor: ['#E53E3E', '#DD6B20', '#D69E2E', '#38A169'] }]
+        },
+        options: { plugins: { legend: { display: false } } }
       };
-      new Chart(document.getElementById('hospitalLevelChart1'), { type: 'bar', data: hospitalData, options: { plugins: { legend: { display: false } } } });
-      new Chart(document.getElementById('hospitalLevelChart2'), { type: 'bar', data: hospitalData, options: { plugins: { legend: { display: false } } } });
+      new Chart(document.getElementById('hospitalLevelChart1'), JSON.parse(JSON.stringify(hospitalConfig)));
+      new Chart(document.getElementById('hospitalLevelChart2'), JSON.parse(JSON.stringify(hospitalConfig)));
 
-      // 13. TA Distribution (Pie - Used twice)
-      const taData = {
-        labels: ['内科', '外科', '儿科', '妇产科', '其他科室'],
-        datasets: [{ data: [32.5, 21.6, 14.6, 12.3, 19.1], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#64B5F6', '#90CAF9'] }]
+      // 13. Department Chart (Pie - Used twice)
+      const deptConfig = {
+        type: 'pie',
+        data: {
+          labels: ['内科', '外科', '儿科', '妇产科', '其他'],
+          datasets: [{ data: [32.5, 21.6, 14.6, 12.3, 19.1], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#64B5F6', '#90CAF9'] }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
       };
-      new Chart(document.getElementById('departmentChart1'), { type: 'pie', data: taData, options: { plugins: { legend: { position: 'bottom' } } } });
-      new Chart(document.getElementById('departmentChart2'), { type: 'pie', data: taData, options: { plugins: { legend: { display: false } } } });
+      new Chart(document.getElementById('departmentChart1'), JSON.parse(JSON.stringify(deptConfig)));
+      const deptConfig2 = JSON.parse(JSON.stringify(deptConfig));
+      deptConfig2.options.plugins.legend.display = false;
+      new Chart(document.getElementById('departmentChart2'), deptConfig2);
 
-      // 14. Greater China MQL (Doughnut with Center Text)
+      // 14. Greater China MQL (Center text via plugin logic)
+      const centerTextPlugin = {
+        id: 'centerText',
+        beforeDraw: function(chart) {
+          if (chart.config.options.elements && chart.config.options.elements.center) {
+            var width = chart.width, height = chart.height, ctx = chart.ctx;
+            ctx.restore();
+            var fontSize = (height / 114).toFixed(2);
+            ctx.font = "bold 1.5em sans-serif";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#0F4C81";
+            var text = chart.config.options.elements.center.text;
+            var textX = Math.round((width - ctx.measureText(text).width) / 2);
+            var textY = height / 2;
+            ctx.fillText(text, textX, textY);
+            ctx.save();
+          }
+        }
+      };
+      Chart.register(centerTextPlugin);
+
       new Chart(document.getElementById('greaterChinaMqlChart'), {
         type: 'doughnut',
         data: {
           labels: ['CN', 'HK', 'TW'],
-          datasets: [{
-            data: [263, 15, 12],
-            backgroundColor: ['#3498db', '#2c3e50', '#e67e22']
-          }]
+          datasets: [{ data: [263, 15, 12], backgroundColor: ['#3498db', '#2c3e50', '#e67e22'] }]
         },
         options: {
           cutout: '60%',
@@ -936,7 +950,7 @@
         }
       });
 
-      // 15. Funnel Chart (Horizontal Bar)
+      // 15. Funnel Chart
       new Chart(document.getElementById('funnelChart'), {
         type: 'bar',
         data: {
@@ -946,10 +960,7 @@
             backgroundColor: ['rgba(15, 76, 129, 0.9)', 'rgba(15, 76, 129, 0.8)', 'rgba(15, 76, 129, 0.6)', 'rgba(15, 76, 129, 0.4)', 'rgba(15, 76, 129, 0.2)']
           }]
         },
-        options: {
-          indexAxis: 'y',
-          plugins: { legend: { display: false } }
-        }
+        options: { indexAxis: 'y', plugins: { legend: { display: false } } }
       });
     });
   </script>
