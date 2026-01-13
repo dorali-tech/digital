@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Marketing Dashboard</title>
+  <title>Digital Marketing Dashboard for CEO</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -41,8 +41,8 @@
       --color-primary: #0F4C81;
       --color-secondary: #3A7CA5;
     }
-    .card-hover { transition: transform 0.3s ease; }
-    .card-hover:hover { transform: translateY(-5px); }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
     
     /* 图表容器高度控制 */
     .chart-box-main { position: relative; width: 100%; height: 250px; }
@@ -51,8 +51,8 @@
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
-  <header class="bg-blue-800 text-white shadow-md">
-    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+  <header class="bg-blue-800 text-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-4">
         <div class="text-xl font-bold flex items-center">
           <i class="fa fa-line-chart mr-2"></i>
@@ -61,7 +61,7 @@
       </div>
       <div class="flex items-center space-x-4">
         <div class="relative">
-          <button class="flex items-center space-x-1 bg-white bg-opacity-20 px-3 py-1 rounded-md hover:bg-opacity-30 transition-all">
+          <button class="flex items-center space-x-1 bg-white bg-opacity-20 px-3 py-1 rounded-md hover:bg-opacity-30 transition-all text-sm">
             <i class="fa fa-calendar"></i>
             <span>2025</span>
             <i class="fa fa-chevron-down text-xs"></i>
@@ -71,13 +71,12 @@
           <div class="w-8 h-8 rounded-full bg-white text-primary flex items-center justify-center">
             <i class="fa fa-user"></i>
           </div>
-          <span></span>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="container mx-auto px-4 py-6 flex-grow">
+  <main class="container mx-auto px-6 py-6 flex-grow">
     <div class="mb-6 border-b border-gray-200">
       <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="dashboardTabs" role="tablist">
         <li class="mr-2" role="presentation">
@@ -102,33 +101,33 @@
     </div>
 
     <div id="social" class="tab-content block">
-      <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="bg-white rounded-xl shadow-sm p-5 mb-6 border border-gray-100">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Month</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Month</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All Months</option>
               <option value="jan">January</option>
               <option value="feb">February</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Year</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Year</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="2025">2025</option>
               <option value="2024">2024</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">BU</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">BU</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All BUs</option>
               <option value="bu1">Business Unit 1</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Platform</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All Platforms</option>
               <option value="gongzhonghao">公众号</option>
               <option value="shipinhao">视频号</option>
@@ -137,28 +136,28 @@
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Content Type</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Content Type</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All Types</option>
               <option value="article">Article</option>
               <option value="video">Video</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Product</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Product</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All Products</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Campaign</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Campaign</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All Campaigns</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">爆款</label>
-            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">爆款</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
               <option value="all">All Content</option>
               <option value="hot">爆款 Only</option>
             </select>
@@ -167,95 +166,94 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 card-hover">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm font-medium text-gray-500">Total Posts</p>
-              <h3 class="text-2xl font-bold text-gray-800 mt-1">1,248</h3>
+              <p class="text-xs font-semibold text-gray-500 uppercase">Total Posts</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-2">1,248</h3>
               <div class="flex items-center mt-2">
-                <span class="text-sm font-medium flex items-center text-green-500">
+                <span class="text-xs font-semibold text-green-500 flex items-center">
                   <i class="fa fa-arrow-up mr-1"></i>+12.5%
                 </span>
-                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                <span class="text-gray-400 text-xs ml-2">vs PY</span>
               </div>
             </div>
-            <div class="bg-blue-100 p-3 rounded-full">
-              <i class="fa fa-file-text-o text-primary text-xl"></i>
+            <div class="p-3 bg-blue-50 rounded-full text-blue-600">
+              <i class="fa fa-file-text-o text-lg"></i>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 card-hover">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm font-medium text-gray-500">Total Views</p>
-              <h3 class="text-2xl font-bold text-gray-800 mt-1">456,789</h3>
+              <p class="text-xs font-semibold text-gray-500 uppercase">Total Views</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-2">456,789</h3>
               <div class="flex items-center mt-2">
-                <span class="text-sm font-medium flex items-center text-green-500">
+                <span class="text-xs font-semibold text-green-500 flex items-center">
                   <i class="fa fa-arrow-up mr-1"></i>+8.3%
                 </span>
-                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                <span class="text-gray-400 text-xs ml-2">vs PY</span>
               </div>
             </div>
-            <div class="bg-green-100 p-3 rounded-full">
-              <i class="fa fa-eye text-green-600 text-xl"></i>
+            <div class="p-3 bg-green-50 rounded-full text-green-600">
+              <i class="fa fa-eye text-lg"></i>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 card-hover">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm font-medium text-gray-500">Total Engagement</p>
-              <h3 class="text-2xl font-bold text-gray-800 mt-1">78,543</h3>
+              <p class="text-xs font-semibold text-gray-500 uppercase">Total Engagement</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-2">78,543</h3>
               <div class="flex items-center mt-2">
-                <span class="text-sm font-medium flex items-center text-green-500">
+                <span class="text-xs font-semibold text-green-500 flex items-center">
                   <i class="fa fa-arrow-up mr-1"></i>+15.7%
                 </span>
-                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                <span class="text-gray-400 text-xs ml-2">vs PY</span>
               </div>
             </div>
-            <div class="bg-purple-100 p-3 rounded-full">
-              <i class="fa fa-heart text-purple-600 text-xl"></i>
+            <div class="p-3 bg-purple-50 rounded-full text-purple-600">
+              <i class="fa fa-heart text-lg"></i>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 card-hover">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm font-medium text-gray-500">Conversion Rate</p>
-              <h3 class="text-2xl font-bold text-gray-800 mt-1">3.45%</h3>
+              <p class="text-xs font-semibold text-gray-500 uppercase">Conversion Rate</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-2">3.45%</h3>
               <div class="flex items-center mt-2">
-                <span class="text-sm font-medium flex items-center text-red-500">
+                <span class="text-xs font-semibold text-red-500 flex items-center">
                   <i class="fa fa-arrow-down mr-1"></i>-0.8%
                 </span>
-                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                <span class="text-gray-400 text-xs ml-2">vs PY</span>
               </div>
             </div>
-            <div class="bg-orange-100 p-3 rounded-full">
-              <i class="fa fa-exchange text-orange-600 text-xl"></i>
+            <div class="p-3 bg-orange-50 rounded-full text-orange-600">
+              <i class="fa fa-exchange text-lg"></i>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-bold text-gray-800">Views Performance</h2>
+          <h2 class="text-lg font-bold text-gray-800">Views Performance</h2>
           <div class="flex space-x-2">
-            <button class="px-3 py-1 text-sm bg-primary text-white rounded-md hover:bg-opacity-90 transition-all">Monthly</button>
+            <button class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-md hover:bg-opacity-90 transition-all">Monthly</button>
           </div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div class="lg:col-span-2 bg-blue-50 rounded-lg p-4 flex flex-col justify-center items-center text-center">
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Views</h3>
-            <div class="text-5xl font-bold text-primary mb-2">456,789</div>
-            <div class="flex items-center">
-              <span class="text-green-500 text-sm font-medium flex items-center">
+          <div class="lg:col-span-2 bg-blue-50 rounded-xl p-5 flex flex-col justify-center items-center text-center">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Total Views</h3>
+            <div class="text-4xl font-extrabold text-primary mb-2">456k</div>
+            <div class="flex items-center justify-center">
+              <span class="text-green-600 text-xs font-bold flex items-center bg-white px-2 py-1 rounded-full shadow-sm">
                 <i class="fa fa-arrow-up mr-1"></i>8.3%
               </span>
-              <span class="text-gray-500 text-sm ml-2">vs PY</span>
             </div>
           </div>
           <div class="lg:col-span-5">
@@ -264,41 +262,41 @@
             </div>
           </div>
           <div class="lg:col-span-5">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">Top 5 Content by Views</h3>
+            <h3 class="text-sm font-bold text-gray-800 mb-4">Top 5 Content by Views</h3>
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <table class="min-w-full divide-y divide-gray-100 text-sm">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                    <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Platform</th>
-                    <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Views</th>
+                    <th scope="col" class="px-3 py-2 text-left font-semibold text-gray-600">Title</th>
+                    <th scope="col" class="px-3 py-2 text-left font-semibold text-gray-600">Platform</th>
+                    <th scope="col" class="px-3 py-2 text-left font-semibold text-gray-600">Views</th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">2025年数字营销的未来</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">公众号A</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">24,567</td>
+                <tbody class="bg-white divide-y divide-gray-100">
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">2025年数字营销的未来</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">公众号A</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">24,567</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">如何在线建立强大的品牌形象</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">视频号B</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">19,876</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">如何在线建立强大的品牌形象</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">视频号B</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">19,876</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">AI在内容创作中的力量</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">视频号C</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">17,654</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">AI在内容创作中的力量</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">视频号C</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">17,654</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">2025年值得关注的社交媒体趋势</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">公众号B</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">16,543</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">2025年值得关注的社交媒体趋势</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">公众号B</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">16,543</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">通过影响者营销最大化ROI</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">公众号C</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">15,432</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">通过影响者营销最大化ROI</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">公众号C</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">15,432</td>
                   </tr>
                 </tbody>
               </table>
@@ -307,22 +305,21 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-bold text-gray-800">Engagement Performance</h2>
+          <h2 class="text-lg font-bold text-gray-800">Engagement Performance</h2>
           <div class="flex space-x-2">
-            <button class="px-3 py-1 text-sm bg-primary text-white rounded-md hover:bg-opacity-90 transition-all">Monthly</button>
+            <button class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-md hover:bg-opacity-90 transition-all">Monthly</button>
           </div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div class="lg:col-span-2 bg-purple-50 rounded-lg p-4 flex flex-col justify-center items-center text-center">
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Engagement</h3>
-            <div class="text-5xl font-bold text-purple-600 mb-2">78,543</div>
-            <div class="flex items-center">
-              <span class="text-green-500 text-sm font-medium flex items-center">
+          <div class="lg:col-span-2 bg-purple-50 rounded-xl p-5 flex flex-col justify-center items-center text-center">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Total Engagement</h3>
+            <div class="text-4xl font-extrabold text-purple-600 mb-2">78k</div>
+            <div class="flex items-center justify-center">
+              <span class="text-green-600 text-xs font-bold flex items-center bg-white px-2 py-1 rounded-full shadow-sm">
                 <i class="fa fa-arrow-up mr-1"></i>15.7%
               </span>
-              <span class="text-gray-500 text-sm ml-2">vs PY</span>
             </div>
           </div>
           <div class="lg:col-span-5">
@@ -331,41 +328,41 @@
             </div>
           </div>
           <div class="lg:col-span-5">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">Top 5 Content by Engagement</h3>
+            <h3 class="text-sm font-bold text-gray-800 mb-4">Top 5 Content by Engagement</h3>
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <table class="min-w-full divide-y divide-gray-100 text-sm">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                    <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Platform</th>
-                    <th scope="col" class="px-3 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Eng.</th>
+                    <th scope="col" class="px-3 py-2 text-left font-semibold text-gray-600">Title</th>
+                    <th scope="col" class="px-3 py-2 text-left font-semibold text-gray-600">Platform</th>
+                    <th scope="col" class="px-3 py-2 text-left font-semibold text-gray-600">Eng.</th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">2025年数字营销的未来</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">公众号A</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">5,678</td>
+                <tbody class="bg-white divide-y divide-gray-100">
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">2025年数字营销的未来</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">公众号A</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">5,678</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">如何在线建立强大的品牌形象</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">视频号B</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">4,567</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">如何在线建立强大的品牌形象</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">视频号B</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">4,567</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">AI在内容创作中的力量</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">视频号C</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">4,321</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">AI在内容创作中的力量</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">视频号C</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">4,321</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">2025年值得关注的社交媒体趋势</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">公众号B</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">3,987</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">2025年值得关注的社交媒体趋势</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">公众号B</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">3,987</td>
                   </tr>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">通过影响者营销最大化ROI</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-500">公众号C</td>
-                    <td class="px-3 py-2 whitespace-nowrap text-gray-900">3,765</td>
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-medium">通过影响者营销最大化ROI</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-500">公众号C</td>
+                    <td class="px-3 py-3 whitespace-nowrap text-gray-900 font-bold">3,765</td>
                   </tr>
                 </tbody>
               </table>
@@ -375,24 +372,24 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-bold text-gray-800">Reading vs Video Views</h2>
-            <div class="text-sm text-gray-500">总计: 4,232,865 + 7,850,226 = 12,083,091</div>
+            <div class="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">Total: 12,083,091</div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="bg-blue-50 rounded-lg p-4 text-center">
-              <h3 class="text-sm font-medium text-gray-700 mb-1">Reading Views</h3>
-              <div class="text-2xl font-bold text-primary mb-1">4,232,865</div>
-              <div class="text-xs text-red-500">
-                <i class="fa fa-arrow-down"></i>70.47% vs PY
+            <div class="bg-blue-50 rounded-xl p-4 text-center">
+              <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Reading Views</h3>
+              <div class="text-xl font-bold text-primary mb-1">4,232,865</div>
+              <div class="text-xs text-red-500 font-medium">
+                <i class="fa fa-arrow-down mr-1"></i>70.47% vs PY
               </div>
             </div>
-            <div class="bg-green-50 rounded-lg p-4 text-center">
-              <h3 class="text-sm font-medium text-gray-700 mb-1">Video Views</h3>
-              <div class="text-2xl font-bold text-green-600 mb-1">7,850,226</div>
-              <div class="text-xs text-green-500">
-                <i class="fa fa-arrow-up"></i>6.69% vs PY
+            <div class="bg-green-50 rounded-xl p-4 text-center">
+              <h3 class="text-xs font-bold text-gray-500 uppercase mb-1">Video Views</h3>
+              <div class="text-xl font-bold text-green-600 mb-1">7,850,226</div>
+              <div class="text-xs text-green-500 font-medium">
+                <i class="fa fa-arrow-up mr-1"></i>6.69% vs PY
               </div>
             </div>
           </div>
@@ -406,36 +403,36 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-bold text-gray-800">Engagement Breakdown</h2>
-            <div class="text-sm text-gray-500">总计: 78,543</div>
+            <div class="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">Total: 78,543</div>
           </div>
           <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-4">
-            <div class="bg-blue-50 rounded-lg p-3 text-center">
-              <h3 class="text-xs font-medium text-gray-700 mb-1">Shares</h3>
-              <div class="text-lg font-bold text-blue-600">19,636</div>
-              <div class="text-xs text-gray-500">25%</div>
+            <div class="bg-blue-50 rounded-lg p-2 text-center">
+              <h3 class="text-[10px] font-bold text-gray-500 uppercase">Shares</h3>
+              <div class="text-sm font-bold text-blue-600">19k</div>
+              <div class="text-[10px] text-gray-400">25%</div>
             </div>
-            <div class="bg-purple-50 rounded-lg p-3 text-center">
-              <h3 class="text-xs font-medium text-gray-700 mb-1">Likes</h3>
-              <div class="text-lg font-bold text-purple-600">27,490</div>
-              <div class="text-xs text-gray-500">35%</div>
+            <div class="bg-purple-50 rounded-lg p-2 text-center">
+              <h3 class="text-[10px] font-bold text-gray-500 uppercase">Likes</h3>
+              <div class="text-sm font-bold text-purple-600">27k</div>
+              <div class="text-[10px] text-gray-400">35%</div>
             </div>
-            <div class="bg-yellow-50 rounded-lg p-3 text-center">
-              <h3 class="text-xs font-medium text-gray-700 mb-1">Favorites</h3>
-              <div class="text-lg font-bold text-yellow-600">11,781</div>
-              <div class="text-xs text-gray-500">15%</div>
+            <div class="bg-yellow-50 rounded-lg p-2 text-center">
+              <h3 class="text-[10px] font-bold text-gray-500 uppercase">Favs</h3>
+              <div class="text-sm font-bold text-yellow-600">11k</div>
+              <div class="text-[10px] text-gray-400">15%</div>
             </div>
-            <div class="bg-red-50 rounded-lg p-3 text-center">
-              <h3 class="text-xs font-medium text-gray-700 mb-1">Comments</h3>
-              <div class="text-lg font-bold text-red-600">11,781</div>
-              <div class="text-xs text-gray-500">15%</div>
+            <div class="bg-red-50 rounded-lg p-2 text-center">
+              <h3 class="text-[10px] font-bold text-gray-500 uppercase">Comm.</h3>
+              <div class="text-sm font-bold text-red-600">11k</div>
+              <div class="text-[10px] text-gray-400">15%</div>
             </div>
-            <div class="bg-green-50 rounded-lg p-3 text-center">
-              <h3 class="text-xs font-medium text-gray-700 mb-1">Clicks</h3>
-              <div class="text-lg font-bold text-green-600">7,855</div>
-              <div class="text-xs text-gray-500">10%</div>
+            <div class="bg-green-50 rounded-lg p-2 text-center">
+              <h3 class="text-[10px] font-bold text-gray-500 uppercase">Clicks</h3>
+              <div class="text-sm font-bold text-green-600">7k</div>
+              <div class="text-[10px] text-gray-400">10%</div>
             </div>
           </div>
           <div class="chart-box-sm flex justify-center">
@@ -447,95 +444,124 @@
 
     <div id="funnel" class="tab-content hidden">
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-sm font-medium text-gray-500">Total Followers</p>
-              <h3 class="text-2xl font-bold text-gray-800 mt-1">125,432</h3>
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Followers</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-2">125,432</h3>
               <div class="flex items-center mt-2">
-                <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+7.2%</span>
-                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                <span class="text-xs font-bold text-green-500 flex items-center">
+                  <i class="fa fa-arrow-up mr-1"></i>7.2%
+                </span>
+                <span class="text-gray-400 text-xs ml-2">vs PY</span>
               </div>
             </div>
-            <div class="bg-blue-100 p-3 rounded-full"><i class="fa fa-users text-primary text-xl"></i></div>
+            <div class="p-3 bg-blue-50 rounded-full text-blue-600 shadow-sm">
+              <i class="fa fa-users text-lg"></i>
+            </div>
           </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
            <div class="flex justify-between items-start">
              <div>
-               <p class="text-sm font-medium text-gray-500">Registered Users</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">45,678</h3>
+               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Registered Users</p>
+               <h3 class="text-2xl font-bold text-gray-800 mt-2">45,678</h3>
                <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+5.8%</span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                 <span class="text-xs font-bold text-green-500 flex items-center">
+                   <i class="fa fa-arrow-up mr-1"></i>5.8%
+                 </span>
+                 <span class="text-gray-400 text-xs ml-2">vs PY</span>
                </div>
              </div>
-             <div class="bg-green-100 p-3 rounded-full"><i class="fa fa-user-plus text-green-600 text-xl"></i></div>
+             <div class="p-3 bg-green-50 rounded-full text-green-600 shadow-sm">
+               <i class="fa fa-user-plus text-lg"></i>
+             </div>
            </div>
          </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+
+         <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
            <div class="flex justify-between items-start">
              <div>
-               <p class="text-sm font-medium text-gray-500">New Reachable HCP</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">3,456</h3>
+               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">New Reachable HCP</p>
+               <h3 class="text-2xl font-bold text-gray-800 mt-2">3,456</h3>
                <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+12.3%</span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                 <span class="text-xs font-bold text-green-500 flex items-center">
+                   <i class="fa fa-arrow-up mr-1"></i>12.3%
+                 </span>
+                 <span class="text-gray-400 text-xs ml-2">vs PY</span>
                </div>
              </div>
-             <div class="bg-purple-100 p-3 rounded-full"><i class="fa fa-user-md text-purple-600 text-xl"></i></div>
+             <div class="p-3 bg-purple-50 rounded-full text-purple-600 shadow-sm">
+               <i class="fa fa-user-md text-lg"></i>
+             </div>
            </div>
          </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+
+         <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
            <div class="flex justify-between items-start">
              <div>
-               <p class="text-sm font-medium text-gray-500">Active Users</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">28,945</h3>
+               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Active Users</p>
+               <h3 class="text-2xl font-bold text-gray-800 mt-2">28,945</h3>
                <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+4.7%</span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                 <span class="text-xs font-bold text-green-500 flex items-center">
+                   <i class="fa fa-arrow-up mr-1"></i>4.7%
+                 </span>
+                 <span class="text-gray-400 text-xs ml-2">vs PY</span>
                </div>
              </div>
-             <div class="bg-blue-100 p-3 rounded-full"><i class="fa fa-user text-blue-600 text-xl"></i></div>
+             <div class="p-3 bg-blue-50 rounded-full text-blue-600 shadow-sm">
+               <i class="fa fa-user text-lg"></i>
+             </div>
            </div>
          </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+
+         <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
            <div class="flex justify-between items-start">
              <div>
-               <p class="text-sm font-medium text-gray-500">Total Leads</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">1,234</h3>
+               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Leads</p>
+               <h3 class="text-2xl font-bold text-gray-800 mt-2">1,234</h3>
                <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+8.7%</span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                 <span class="text-xs font-bold text-green-500 flex items-center">
+                   <i class="fa fa-arrow-up mr-1"></i>8.7%
+                 </span>
+                 <span class="text-gray-400 text-xs ml-2">vs PY</span>
                </div>
              </div>
-             <div class="bg-orange-100 p-3 rounded-full"><i class="fa fa-envelope text-orange-600 text-xl"></i></div>
+             <div class="p-3 bg-orange-50 rounded-full text-orange-600 shadow-sm">
+               <i class="fa fa-envelope text-lg"></i>
+             </div>
            </div>
          </div>
-         <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg">
+
+         <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
            <div class="flex justify-between items-start">
              <div>
-               <p class="text-sm font-medium text-gray-500">MQL Conversion Rate</p>
-               <h3 class="text-2xl font-bold text-gray-800 mt-1">2.7%</h3>
+               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">MQL Conversion</p>
+               <h3 class="text-2xl font-bold text-gray-800 mt-2">2.7%</h3>
                <div class="flex items-center mt-2">
-                 <span class="text-sm font-medium flex items-center text-green-500"><i class="fa fa-arrow-up mr-1"></i>+0.3%</span>
-                 <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                 <span class="text-xs font-bold text-green-500 flex items-center">
+                   <i class="fa fa-arrow-up mr-1"></i>0.3%
+                 </span>
+                 <span class="text-gray-400 text-xs ml-2">vs PY</span>
                </div>
              </div>
-             <div class="bg-red-100 p-3 rounded-full"><i class="fa fa-exchange text-red-600 text-xl"></i></div>
+             <div class="p-3 bg-red-50 rounded-full text-red-600 shadow-sm">
+               <i class="fa fa-exchange text-lg"></i>
+             </div>
            </div>
          </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div class="bg-white rounded-lg shadow-md p-5">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <h2 class="text-lg font-bold text-gray-800 mb-4">WeChat Followers Trend</h2>
           <div class="chart-box-main">
               <canvas id="wechatFollowersChart"></canvas>
           </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-5">
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <h2 class="text-lg font-bold text-gray-800 mb-4">Video Followers Trend</h2>
           <div class="chart-box-main">
               <canvas id="videoFollowersChart"></canvas>
@@ -543,27 +569,29 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-5 mb-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6">Reachable HCP Contacts Profile Analysis</h2>
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <h2 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fa fa-user-md text-primary mr-2"></i>Reachable HCP Contacts Profile Analysis
+        </h2>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div class="bg-gray-50 rounded-lg p-6 flex flex-col justify-center items-center text-center">
-            <h3 class="text-md font-semibold text-gray-800 mb-4">KPI达成率</h3>
+          <div class="bg-gray-50 rounded-xl p-6 flex flex-col justify-center items-center text-center">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-4">KPI达成率</h3>
             <div class="chart-box-sm flex justify-center">
                 <canvas id="kpiGaugeChart"></canvas>
             </div>
             <div class="text-center mt-[-40px]">
-              <div class="text-3xl font-bold text-primary">87%</div>
-              <div class="text-sm text-gray-500">目标: 10,000</div>
+              <div class="text-3xl font-extrabold text-primary">87%</div>
+              <div class="text-xs text-gray-500 mt-1">目标: 10,000</div>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Actual vs KPI</h3>
+          <div class="bg-gray-50 rounded-xl p-6">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 text-center">Actual vs KPI</h3>
             <div class="chart-box-sm">
                 <canvas id="actualVsKpiChart"></canvas>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Personal Distribution</h3>
+          <div class="bg-gray-50 rounded-xl p-6">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 text-center">Personal Distribution</h3>
             <div class="chart-box-sm flex justify-center">
                 <canvas id="professionalTitleChart1"></canvas>
             </div>
@@ -571,20 +599,20 @@
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">City level Distribution</h3>
+          <div class="bg-gray-50 rounded-xl p-6">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 text-center">City level Distribution</h3>
             <div class="chart-box-sm">
                 <canvas id="cityLevelChart1"></canvas>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Hospital Class Distribution</h3>
+          <div class="bg-gray-50 rounded-xl p-6">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 text-center">Hospital Class Distribution</h3>
             <div class="chart-box-sm">
                 <canvas id="hospitalLevelChart1"></canvas>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">TA Distribution (Top 5)</h3>
+          <div class="bg-gray-50 rounded-xl p-6">
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-4 text-center">TA Distribution (Top 5)</h3>
             <div class="chart-box-sm flex justify-center">
                 <canvas id="departmentChart1"></canvas>
             </div>
@@ -592,29 +620,31 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-5 mb-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6">New Reachable HCP Profile</h2>
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <h2 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fa fa-user-plus text-primary mr-2"></i>New Reachable HCP Profile
+        </h2>
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">Personal Distribution</h4>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <h4 class="text-xs font-bold text-gray-500 uppercase mb-3 text-center">Personal Dist.</h4>
             <div class="chart-box-sm flex justify-center">
                 <canvas id="professionalTitleChart2"></canvas>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">City level Distribution</h4>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <h4 class="text-xs font-bold text-gray-500 uppercase mb-3 text-center">City level Dist.</h4>
             <div class="chart-box-sm">
                 <canvas id="cityLevelChart2"></canvas>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">Hospital Class Distribution</h4>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <h4 class="text-xs font-bold text-gray-500 uppercase mb-3 text-center">Hospital Class Dist.</h4>
             <div class="chart-box-sm">
                 <canvas id="hospitalLevelChart2"></canvas>
             </div>
           </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <h4 class="text-md font-semibold text-gray-800 mb-3 text-center">TA Distribution (top 5)</h4>
+          <div class="bg-gray-50 rounded-xl p-4">
+            <h4 class="text-xs font-bold text-gray-500 uppercase mb-3 text-center">TA Dist. (top 5)</h4>
             <div class="chart-box-sm flex justify-center">
                 <canvas id="departmentChart2"></canvas>
             </div>
@@ -622,44 +652,44 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-5 mb-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6">Leads Source</h2>
-        <div class="overflow-x-auto">
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <h2 class="text-lg font-bold text-gray-800 mb-6">Leads Source</h2>
+        <div class="overflow-x-auto rounded-lg border border-gray-100">
           <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead class="bg-gray-800 text-white">
+            <thead class="bg-gray-50">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider">No.</th>
-                <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider">Category</th>
-                <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider">Digital</th>
-                <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider">Event</th>
+                <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">No.</th>
+                <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Category</th>
+                <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Digital</th>
+                <th scope="col" class="px-6 py-3 text-left font-semibold text-gray-500 uppercase tracking-wider">Event</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">1</td>
                 <td class="px-6 py-4 whitespace-nowrap text-gray-500">Leads %</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-500">58%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-500">42%</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">58%</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">42%</td>
               </tr>
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">2</td>
                 <td class="px-6 py-4 whitespace-nowrap text-gray-500">Raw leads to MQL %</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-500">42%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-500">58%</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">42%</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">58%</td>
               </tr>
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">3</td>
                 <td class="px-6 py-4 whitespace-nowrap text-gray-500">MQL to Oppty %</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-500">25%</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-500">75%</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">25%</td>
+                <td class="px-6 py-4 whitespace-nowrap text-gray-500 font-medium">75%</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-5 mb-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6">大中华区MQL</h2>
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <h2 class="text-lg font-bold text-gray-800 mb-6">大中华区MQL</h2>
         <div class="flex justify-center" style="height: 280px; width: 100%; max-width: 600px; margin: 0 auto;">
           <div class="chart-box-main">
               <canvas id="greaterChinaMqlChart"></canvas>
@@ -667,8 +697,8 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow-md p-5 mb-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-6">User Conversion Funnel</h2>
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+        <h2 class="text-lg font-bold text-gray-800 mb-6">User Conversion Funnel</h2>
         <div class="flex justify-center" style="height: 300px; width: 100%; max-width: 800px; margin: 0 auto;">
           <div class="chart-box-main">
               <canvas id="funnelChart"></canvas>
@@ -678,8 +708,8 @@
     </div>
   </main>
 
-  <footer class="bg-gray-800 text-white py-6">
-    <div class="container mx-auto px-4 text-center">
+  <footer class="bg-white border-t border-gray-200 text-gray-500 py-6">
+    <div class="container mx-auto px-4 text-center text-sm">
       <p>&copy; 2025 Digital Marketing Dashboard. All rights reserved.</p>
     </div>
   </footer>
@@ -699,26 +729,46 @@
         { id: 'funnel-tab-btn', tab: 'funnel' }
       ];
       
-      buttons.forEach(btn => {
-        const el = document.getElementById(btn.id);
-        if (btn.tab === tabId) {
-          el.classList.add('border-primary', 'text-primary');
-          el.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+      buttons.forEach(item => {
+        const btn = document.getElementById(item.id);
+        if(item.tab === tabId) {
+          btn.classList.add('border-primary', 'text-primary');
+          btn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
         } else {
-          el.classList.remove('border-primary', 'text-primary');
-          el.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+          btn.classList.remove('border-primary', 'text-primary');
+          btn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
         }
       });
     }
 
-    // Chart.js Init
-    document.addEventListener('DOMContentLoaded', function() {
-      Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-      Chart.defaults.color = '#64748b';
-      Chart.defaults.responsive = true;
-      // 关键：强制禁用宽高比维持，让 CSS 高度生效
-      Chart.defaults.maintainAspectRatio = false; 
+    // Chart.js Configuration
+    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    Chart.defaults.color = '#64748b';
+    Chart.defaults.responsive = true;
+    Chart.defaults.maintainAspectRatio = false; // 关键配置：防止自动拉伸
 
+    // Center Text Plugin for Doughnut
+    const centerTextPlugin = {
+      id: 'centerText',
+      beforeDraw: function(chart) {
+        if (chart.config.options.elements && chart.config.options.elements.center) {
+          var width = chart.width, height = chart.height, ctx = chart.ctx;
+          ctx.restore();
+          var fontSize = (height / 114).toFixed(2);
+          ctx.font = "bold " + 1.5 + "em sans-serif";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "#0F4C81";
+          var text = chart.config.options.elements.center.text;
+          var textX = Math.round((width - ctx.measureText(text).width) / 2);
+          var textY = height / 2;
+          ctx.fillText(text, textX, textY);
+          ctx.save();
+        }
+      }
+    };
+    Chart.register(centerTextPlugin);
+
+    document.addEventListener('DOMContentLoaded', function() {
       // --- TAB 1 CHARTS ---
       new Chart(document.getElementById('viewsChart'), {
         type: 'line',
@@ -821,7 +871,6 @@
             { label: 'KPI', data: [1000, 1300, 1600, 1900, 2200, 2500], borderColor: '#0F4C81', borderDash: [5, 5] }
           ]
         },
-        // 关键：确保不显示多余的 grid 线，保持清爽
         options: {
             scales: {
                 y: { grid: { display: true, drawBorder: false } },
@@ -877,26 +926,6 @@
       const deptConfig2 = JSON.parse(JSON.stringify(deptConfig));
       deptConfig2.options.plugins.legend.display = false;
       new Chart(document.getElementById('departmentChart2'), deptConfig2);
-
-      const centerTextPlugin = {
-        id: 'centerText',
-        beforeDraw: function(chart) {
-          if (chart.config.options.elements && chart.config.options.elements.center) {
-            var width = chart.width, height = chart.height, ctx = chart.ctx;
-            ctx.restore();
-            var fontSize = (height / 114).toFixed(2);
-            ctx.font = "bold 1.5em sans-serif";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = "#0F4C81";
-            var text = chart.config.options.elements.center.text;
-            var textX = Math.round((width - ctx.measureText(text).width) / 2);
-            var textY = height / 2;
-            ctx.fillText(text, textX, textY);
-            ctx.save();
-          }
-        }
-      };
-      Chart.register(centerTextPlugin);
 
       new Chart(document.getElementById('greaterChinaMqlChart'), {
         type: 'doughnut',
