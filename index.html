@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Marketing Dashboard for CEO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F4C81',
+            secondary: '#3A7CA5',
+            accent: '#1E88E5',
+            light: '#F8FAFC',
+            dark: '#1A365D'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+      .transition-all-300 { transition: all 0.3s ease; }
+    }
+  </style>
+
+  <style>
+    :root {
+      --color-primary: #0F4C81;
+      --color-secondary: #3A7CA5;
+    }
+    .card-hover { transition: transform 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); }
+    /* 确保图表容器有相对定位，防止溢出 */
+    .chart-container { position: relative; height: 100%; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen flex flex-col">
+  <header class="bg-blue-800 text-white shadow-md">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="text-xl font-bold flex items-center">
+          <i class="fa fa-line-chart mr-2"></i>
+          <span>Digital Marketing Dashboard</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <button class="flex items-center space-x-1 bg-white bg-opacity-20 px-3 py-1 rounded-md hover:bg-opacity-30 transition-all">
+            <i class="fa fa-calendar"></i>
+            <span>2025</span>
+            <i class="fa fa-chevron-down text-xs"></i>
+          </button>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-white text-primary flex items-center justify-center">
+            <i class="fa fa-user"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-6 flex-grow">
+    <div class="mb-6 border-b border-gray-200">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="dashboardTabs" role="tablist">
+        <li class="mr-2" role="presentation">
+          <button 
+            class="inline-block p-4 border-b-2 rounded-t-lg transition-all border-primary text-primary" 
+            id="social-tab" 
+            data-tab="social" 
+            type="button" 
+            onclick="switchTab('social')"
+          >
+            <i class="fa fa-share-alt mr-2"></i>Social Media Dashboard
+          </button>
+        </li>
+        <li class="mr-2" role="presentation">
+          <button 
+            class="inline-block p-4 border-b-2 rounded-t-lg transition-all border-transparent hover:text-gray-600 hover:border-gray-300" 
+            id="funnel-tab" 
+            data-tab="funnel" 
+            type="button" 
+            onclick="switchTab('funnel')"
+          >
+            <i class="fa fa-filter mr-2"></i>User Funnel Metrics
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div id="social" class="tab-content block">
+      <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Month</label>
+            <select class="w-full border border-gray-300 rounded-md px-3 py-2"><option>All Months</option></select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Year</label>
+            <select class="w-full border border-gray-300 rounded-md px-3 py-2"><option>2025</option></select>
+          </div>
+           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">BU</label>
+            <select class="w-full border border-gray-300 rounded-md px-3 py-2"><option>All BUs</option></select>
+          </div>
+           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
+            <select class="w-full border border-gray-300 rounded-md px-3 py-2"><option>All Platforms</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Total Posts</p>
+              <h3 class="text-2xl font-bold text-gray-800 mt-1">1,248</h3>
+              <div class="flex items-center mt-2">
+                <span class="text-sm font-medium flex items-center text-green-500">
+                  <i class="fa fa-arrow-up mr-1"></i>+12.5%
+                </span>
+                <span class="text-gray-500 text-sm ml-2">vs PY</span>
+              </div>
+            </div>
+            <div class="bg-blue-100 p-3 rounded-full">
+              <i class="fa fa-file-text-o text-primary text-xl"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total Views</p>
+                <h3 class="text-2xl font-bold text-gray-800 mt-1">456,789</h3>
+                <div class="flex items-center mt-2">
+                  <span class="text-sm font-medium flex items-center text-green-500">
+                    <i class="fa fa-arrow-up mr-1"></i>+8.3%
+                  </span>
+                  <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                </div>
+              </div>
+              <div class="bg-green-100 p-3 rounded-full">
+                <i class="fa fa-eye text-green-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total Engagement</p>
+                <h3 class="text-2xl font-bold text-gray-800 mt-1">78,543</h3>
+                <div class="flex items-center mt-2">
+                  <span class="text-sm font-medium flex items-center text-green-500">
+                    <i class="fa fa-arrow-up mr-1"></i>+15.7%
+                  </span>
+                  <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                </div>
+              </div>
+              <div class="bg-purple-100 p-3 rounded-full">
+                <i class="fa fa-heart text-purple-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-4 transition-all hover:shadow-lg card-hover">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Conversion Rate</p>
+                <h3 class="text-2xl font-bold text-gray-800 mt-1">3.45%</h3>
+                <div class="flex items-center mt-2">
+                  <span class="text-sm font-medium flex items-center text-red-500">
+                    <i class="fa fa-arrow-down mr-1"></i>-0.8%
+                  </span>
+                  <span class="text-gray-500 text-sm ml-2">vs PY</span>
+                </div>
+              </div>
+              <div class="bg-orange-100 p-3 rounded-full">
+                <i class="fa fa-exchange text-orange-600 text-xl"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-bold text-gray-800">Views Performance</h2>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-2 bg-blue-50 rounded-lg p-4 flex flex-col justify-center items-center text-center">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Views</h3>
+            <div class="text-4xl md:text-5xl font-bold text-primary mb-2">456k</div>
+            <div class="flex items-center">
+              <span class="text-green-500 text-sm font-medium flex items-center">
+                <i class="fa fa-arrow-up mr-1"></i>8.3%
+              </span>
+            </div>
+          </div>
+          <div class="lg:col-span-10">
+            <div class="chart-container h-[300px]">
+                <canvas id="viewsChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">Engagement Performance</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-2 bg-purple-50 rounded-lg p-4 flex flex-col justify-center items-center text-center">
+             <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Eng.</h3>
+             <div class="text-4xl md:text-5xl font-bold text-purple-600 mb-2">78k</div>
+             <div class="flex items-center">
+               <span class="text-green-500 text-sm font-medium flex items-center">
+                 <i class="fa fa-arrow-up mr-1"></i>15.7%
+               </span>
+             </div>
+          </div>
+          <div class="lg:col-span-10">
+            <div class="chart-container h-[300px]">
+                <canvas id="engagementChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Reading vs Video Views</h2>
+          <div class="chart-container h-[250px]">
+              <canvas id="contentTypeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Engagement Breakdown</h2>
+          <div class="chart-container h-[250px] flex justify-center">
+              <canvas id="engagementBreakdownChart"></canvas>
+          </div>
+        </div>
+      </div>
+      
+       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">WeChat Followers Trend</h2>
+          <div class="chart-container h-[300px]">
+             <canvas id="wechatFollowersChart"></canvas>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Video Followers Trend</h2>
+          <div class="chart-container h-[300px]">
+             <canvas id="videoFollowersChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="funnel" class="tab-content hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
+              <div><p class="text-gray-500 text-sm">Followers</p><h3 class="text-2xl font-bold">125,432</h3></div>
+              <div class="bg-blue-100 p-3 rounded-full text-primary"><i class="fa fa-users"></i></div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
+              <div><p class="text-gray-500 text-sm">Leads</p><h3 class="text-2xl font-bold">1,234</h3></div>
+              <div class="bg-orange-100 p-3 rounded-full text-orange-600"><i class="fa fa-envelope"></i></div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
+              <div><p class="text-gray-500 text-sm">MQL Conversion</p><h3 class="text-2xl font-bold">2.7%</h3></div>
+              <div class="bg-red-100 p-3 rounded-full text-red-600"><i class="fa fa-exchange"></i></div>
+          </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">Reachable HCP Contacts Profile Analysis</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div class="bg-gray-50 rounded-lg p-6 flex flex-col justify-center items-center">
+            <h3 class="text-md font-semibold text-gray-800 mb-4">KPI 达成率</h3>
+            <div class="chart-container h-[200px] w-[200px]">
+                <canvas id="kpiGaugeChart"></canvas>
+            </div>
+            <div class="text-center mt-[-40px]">
+              <div class="text-3xl font-bold text-primary">87%</div>
+              <div class="text-sm text-gray-500">目标: 10,000</div>
+            </div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Actual vs KPI</h3>
+            <div class="chart-container h-[200px]">
+                <canvas id="actualVsKpiChart"></canvas>
+            </div>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-md font-semibold text-gray-800 mb-4 text-center">Personal Distribution</h3>
+            <div class="chart-container h-[200px]">
+                <canvas id="professionalTitleChart1"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">大中华区 MQL</h2>
+        <div class="flex justify-center h-[350px]">
+           <div class="chart-container h-full w-full max-w-[500px]">
+               <canvas id="greaterChinaMqlChart"></canvas>
+           </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-6">User Conversion Funnel</h2>
+        <div class="flex justify-center h-[400px]">
+             <div class="chart-container h-full w-full max-w-[800px]">
+                <canvas id="funnelChart"></canvas>
+             </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2025 Digital Marketing Dashboard. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching function
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+        content.classList.remove('block');
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById(tabId).classList.add('block');
+      
+      document.querySelectorAll('#dashboardTabs button').forEach(button => {
+        button.classList.remove('border-primary', 'text-primary');
+        button.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+      });
+      
+      const activeButton = document.querySelector(`button[data-tab="${tabId}"]`);
+      activeButton.classList.add('border-primary', 'text-primary');
+      activeButton.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+    }
+
+    // Chart.js Default Config
+    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    Chart.defaults.color = '#64748b';
+    Chart.defaults.responsive = true;
+    Chart.defaults.maintainAspectRatio = false;
+
+    // Helper to create gradient
+    function createGradient(ctx, colorStart, colorEnd) {
+      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, colorStart);
+      gradient.addColorStop(1, colorEnd);
+      return gradient;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Views Chart (Line)
+      new Chart(document.getElementById('viewsChart'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [
+            {
+              label: '2025 Views',
+              data: [32000, 35000, 42000, 38000, 45000, 48000, 52000, 56000, 53000, 58000, 62000, 65000],
+              borderColor: '#0F4C81',
+              backgroundColor: 'rgba(15, 76, 129, 0.1)',
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: '2024 Views',
+              data: [28000, 30000, 36000, 34000, 39000, 41000, 45000, 48000, 46000, 50000, 54000, 57000],
+              borderColor: '#94A3B8',
+              borderDash: [5, 5],
+              tension: 0.4,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { position: 'top' } },
+          scales: { y: { beginAtZero: true } }
+        }
+      });
+
+      // 2. Engagement Chart (Line)
+      new Chart(document.getElementById('engagementChart'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: '2025 Eng.',
+            data: [5200, 5800, 6500, 6100, 7200, 7600, 8300, 8900, 8500, 9200, 9800, 10500],
+            borderColor: '#3A7CA5',
+            backgroundColor: 'rgba(58, 124, 165, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        }
+      });
+
+      // 3. Content Type Chart (Bar)
+      new Chart(document.getElementById('contentTypeChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            { label: 'Reading', data: [15, 16, 14, 15.5, 16.5, 15.5], backgroundColor: '#0F4C81' },
+            { label: 'Video', data: [90, 85, 95, 88, 92, 89], backgroundColor: '#38A169' }
+          ]
+        },
+        options: { scales: { y: { beginAtZero: true, title: {display: true, text: 'Views (x10k)'} } } }
+      });
+
+      // 4. Engagement Breakdown (Doughnut)
+      new Chart(document.getElementById('engagementBreakdownChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Shares', 'Likes', 'Favorites', 'Comments', 'Clicks'],
+          datasets: [{
+            data: [25, 35, 15, 15, 10],
+            backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#EF4444', '#38A169']
+          }]
+        },
+        options: { cutout: '60%', plugins: { legend: { position: 'right' } } }
+      });
+
+      // 5. WeChat Followers (Bar)
+      new Chart(document.getElementById('wechatFollowersChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            { label: '公众号A', data: [1200, 1500, 1800, 2100, 2400, 2700], backgroundColor: '#0F4C81' },
+            { label: '公众号B', data: [900, 1100, 1300, 1500, 1700, 1900], backgroundColor: '#3A7CA5' }
+          ]
+        }
+      });
+
+      // 6. Video Followers (Bar)
+      new Chart(document.getElementById('videoFollowersChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            { label: '视频号A', data: [800, 1200, 1600, 2000, 2400, 2800], backgroundColor: '#E53E3E' },
+            { label: '视频号B', data: [600, 900, 1200, 1500, 1800, 2100], backgroundColor: '#DD6B20' }
+          ]
+        }
+      });
+
+      // 7. KPI Gauge (Doughnut as Gauge)
+      new Chart(document.getElementById('kpiGaugeChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Achieved', 'Remaining'],
+          datasets: [{
+            data: [87, 13],
+            backgroundColor: ['#38A169', '#E2E8F0'],
+            circumference: 180,
+            rotation: 270
+          }]
+        },
+        options: { cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+      });
+
+      // 8. Actual vs KPI
+      new Chart(document.getElementById('actualVsKpiChart'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            { label: 'Actual', data: [1200, 1500, 1800, 2100, 2400, 2700], borderColor: '#38A169', tension: 0.3 },
+            { label: 'KPI', data: [1000, 1300, 1600, 1900, 2200, 2500], borderColor: '#0F4C81', borderDash: [5, 5] }
+          ]
+        }
+      });
+
+      // 9. Personal Distribution (Pie)
+      new Chart(document.getElementById('professionalTitleChart1'), {
+        type: 'pie',
+        data: {
+          labels: ['医生', '护士', '医技', '其他'],
+          datasets: [{ data: [45, 25, 15, 15], backgroundColor: ['#0F4C81', '#3A7CA5', '#1E88E5', '#90CAF9'] }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
+      });
+
+      // 10. Greater China MQL (Doughnut with Center Text)
+      const centerTextPlugin = {
+        id: 'centerText',
+        beforeDraw: function(chart) {
+          if (chart.config.options.elements.center) {
+            var width = chart.width, height = chart.height, ctx = chart.ctx;
+            ctx.restore();
+            var fontSize = (height / 114).toFixed(2);
+            ctx.font = "bold " + fontSize + "em sans-serif";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#0F4C81";
+            var text = chart.config.options.elements.center.text,
+                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                textY = height / 2;
+            ctx.fillText(text, textX, textY);
+            ctx.save();
+          }
+        }
+      };
+      
+      new Chart(document.getElementById('greaterChinaMqlChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['CN (263)', 'HK (15)', 'TW (12)'],
+          datasets: [{
+            data: [263, 15, 12],
+            backgroundColor: ['#3498db', '#2c3e50', '#e67e22']
+          }]
+        },
+        options: {
+          elements: { center: { text: '290' } }, // Total MQL
+          cutout: '60%'
+        },
+        plugins: [centerTextPlugin]
+      });
+
+      // 11. Funnel Chart (Horizontal Bar sorted)
+      new Chart(document.getElementById('funnelChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Engaged Traffic', 'Leads', 'MQLs', 'Opp. Value', 'OIT'],
+          datasets: [{
+            label: 'Count',
+            data: [125432, 12543, 5678, 3245, 1876],
+            backgroundColor: [
+              'rgba(15, 76, 129, 0.9)',
+              'rgba(15, 76, 129, 0.8)',
+              'rgba(15, 76, 129, 0.6)',
+              'rgba(15, 76, 129, 0.4)',
+              'rgba(15, 76, 129, 0.2)'
+            ],
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: { legend: { display: false } }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
